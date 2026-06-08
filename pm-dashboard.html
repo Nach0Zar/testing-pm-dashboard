@@ -1,0 +1,2287 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Examia | PM Dashboard</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-2: #eef3f8;
+      --text: #172033;
+      --muted: #5f6b7c;
+      --line: #dbe3ee;
+      --blue: #1f6feb;
+      --green: #17865b;
+      --amber: #b56a00;
+      --red: #c3372d;
+      --cyan: #0f7490;
+      --violet: #6b4fd8;
+      --shadow: 0 10px 26px rgba(24, 33, 54, 0.08);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      letter-spacing: 0;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+      letter-spacing: 0;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+    }
+
+    .hero {
+      background: #172033;
+      color: #ffffff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .hero-inner,
+    .section-inner {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .hero-inner {
+      padding: 28px 0 22px;
+    }
+
+    .topline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: var(--radius);
+      background: #233149;
+      color: #8fd3ff;
+      font-weight: 800;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(1.55rem, 3vw, 2.35rem);
+      line-height: 1.05;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: #bec9d8;
+      font-size: 0.95rem;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #e8eef7;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #37d399;
+      box-shadow: 0 0 0 4px rgba(55, 211, 153, 0.16);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .summary-panel {
+      min-height: 158px;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: var(--radius);
+      background: #223047;
+    }
+
+    .summary-panel h2 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+
+    .summary-panel p {
+      margin: 0;
+      max-width: 74ch;
+      color: #d4dceb;
+      line-height: 1.55;
+    }
+
+    .doc-stack {
+      display: grid;
+      gap: 10px;
+    }
+
+    .doc-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 74px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: var(--radius);
+      background: #223047;
+    }
+
+    .doc-chip strong {
+      display: block;
+      font-size: 0.95rem;
+    }
+
+    .doc-chip span {
+      color: #bec9d8;
+      font-size: 0.85rem;
+    }
+
+    .doc-chip code {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      padding: 4px 7px;
+      white-space: nowrap;
+    }
+
+    main {
+      padding: 0 0 42px;
+    }
+
+    .tab-shell {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(245, 247, 251, 0.96);
+      backdrop-filter: blur(10px);
+    }
+
+    .tab-nav {
+      display: flex;
+      gap: 8px;
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 12px 0;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    .tab-button {
+      position: relative;
+      flex: 0 0 auto;
+      min-height: 42px;
+      padding: 10px 14px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .tab-button:hover {
+      color: var(--text);
+      background: #ffffff;
+      border-color: var(--line);
+    }
+
+    .tab-button[aria-selected="true"] {
+      border-color: #1f6feb;
+      background: #e8f2ff;
+      color: #164fbd;
+      box-shadow: inset 0 -3px 0 #1f6feb;
+    }
+
+    .tab-button:focus-visible {
+      outline: 3px solid rgba(31, 111, 235, 0.28);
+      outline-offset: 2px;
+    }
+
+    .tab-panel {
+      padding-top: 4px;
+    }
+
+    .tab-panel[hidden] {
+      display: none;
+    }
+
+    .section {
+      margin-top: 18px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 1.18rem;
+    }
+
+    .section-header p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .source-note {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 5px 9px;
+      border: 1px solid #bfd2e9;
+      border-radius: 999px;
+      background: #e8f2ff;
+      color: #254b7d;
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .kpi-card,
+    .insight-card,
+    .sprint-card,
+    .backlog-card,
+    .metric-panel,
+    .filter-card,
+    .table-wrap,
+    .gantt-wrap {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .kpi-card {
+      min-height: 126px;
+      padding: 16px;
+      display: grid;
+      align-content: space-between;
+      gap: 10px;
+    }
+
+    .kpi-card small {
+      color: var(--muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+    }
+
+    .kpi-value {
+      display: flex;
+      align-items: baseline;
+      gap: 7px;
+      font-size: clamp(1.7rem, 4vw, 2.2rem);
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .kpi-value span {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .kpi-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.35;
+    }
+
+    .accent-blue {
+      border-top: 4px solid var(--blue);
+    }
+
+    .accent-green {
+      border-top: 4px solid var(--green);
+    }
+
+    .accent-amber {
+      border-top: 4px solid var(--amber);
+    }
+
+    .accent-cyan {
+      border-top: 4px solid var(--cyan);
+    }
+
+    .accent-violet {
+      border-top: 4px solid var(--violet);
+    }
+
+    .accent-red {
+      border-top: 4px solid var(--red);
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .filter-card {
+      padding: 14px;
+    }
+
+    .filter-card h3 {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+    }
+
+    .segmented {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .segmented button {
+      min-height: 36px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #ffffff;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .segmented button[aria-pressed="true"] {
+      border-color: #1f6feb;
+      background: #e8f2ff;
+      color: #164fbd;
+    }
+
+    .focus-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .focus-card {
+      min-height: 104px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+    }
+
+    .focus-card small {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+    }
+
+    .focus-card strong {
+      display: block;
+      font-size: 1.7rem;
+      line-height: 1;
+    }
+
+    .focus-card span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.3;
+    }
+
+    .sprint-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .sprint-card {
+      padding: 16px;
+      min-height: 192px;
+    }
+
+    .sprint-card header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .sprint-card h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .badge-done {
+      background: #e7f7ef;
+      color: #0f6d49;
+    }
+
+    .badge-risk {
+      background: #fff3da;
+      color: #8f5300;
+    }
+
+    .badge-progress {
+      background: #e8f2ff;
+      color: #164fbd;
+    }
+
+    .badge-doc {
+      background: #e8f2ff;
+      color: #164fbd;
+    }
+
+    .badge-dev {
+      background: #eff0ff;
+      color: #5140b8;
+    }
+
+    .badge-qa {
+      background: #e4f6fb;
+      color: #0f6680;
+    }
+
+    .badge-bug {
+      background: #ffebe8;
+      color: #9e261f;
+    }
+
+    .sprint-card ul,
+    .insight-list,
+    .backlog-card ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .sprint-card li,
+    .insight-list li,
+    .backlog-card li {
+      position: relative;
+      padding-left: 18px;
+      margin: 10px 0;
+      color: var(--muted);
+      line-height: 1.42;
+    }
+
+    .sprint-card li::before,
+    .insight-list li::before,
+    .backlog-card li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.62em;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .insight-card {
+      padding: 16px;
+      min-height: 188px;
+    }
+
+    .insight-card h3 {
+      margin: 0 0 10px;
+      font-size: 0.98rem;
+    }
+
+    .quality-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .metric-panel {
+      min-height: 260px;
+      padding: 16px;
+    }
+
+    .metric-panel h3 {
+      margin: 0 0 12px;
+      font-size: 0.98rem;
+    }
+
+    .metric-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: minmax(118px, 0.8fr) minmax(130px, 1.4fr) 78px;
+      align-items: center;
+      gap: 10px;
+      min-height: 36px;
+    }
+
+    .metric-label {
+      min-width: 0;
+      color: #2e3848;
+      font-size: 0.86rem;
+      font-weight: 800;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .metric-subtext {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e6edf5;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: var(--blue);
+    }
+
+    .progress-fill.danger {
+      background: var(--red);
+    }
+
+    .progress-fill.warning {
+      background: var(--amber);
+    }
+
+    .progress-fill.success {
+      background: var(--green);
+    }
+
+    .metric-value {
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .mini-table {
+      width: 100%;
+      min-width: 0;
+    }
+
+    .mini-table th,
+    .mini-table td {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.86rem;
+    }
+
+    .mini-table th {
+      background: transparent;
+      color: var(--muted);
+    }
+
+    .mini-table td:last-child,
+    .mini-table th:last-child {
+      text-align: right;
+    }
+
+    .gantt-wrap {
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-right: 12px;
+    }
+
+    .gantt {
+      min-width: 1420px;
+      padding-right: 12px;
+    }
+
+    .gantt-head,
+    .gantt-row {
+      display: grid;
+      grid-template-columns: 132px repeat(6, minmax(170px, 1fr));
+    }
+
+    .gantt-head {
+      background: #eef3f8;
+      border-bottom: 1px solid var(--line);
+      color: #4c596b;
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .gantt-head div,
+    .team-label,
+    .gantt-cell {
+      min-height: 62px;
+      padding: 10px;
+      border-right: 1px solid var(--line);
+    }
+
+    .gantt-head div:last-child,
+    .gantt-cell:last-child {
+      border-right: 0;
+    }
+
+    .team-label {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+      font-weight: 800;
+    }
+
+    .gantt-cell {
+      position: relative;
+      display: grid;
+      align-content: start;
+      gap: 7px;
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .gantt-row:last-child .team-label,
+    .gantt-row:last-child .gantt-cell {
+      border-bottom: 0;
+    }
+
+    .bar {
+      display: flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 9px;
+      border-radius: 7px;
+      color: #ffffff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      line-height: 1.1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .bar-doc {
+      background: var(--blue);
+    }
+
+    .bar-dev {
+      background: var(--violet);
+    }
+
+    .bar-qa {
+      background: var(--cyan);
+    }
+
+    .bar-bug {
+      background: var(--red);
+    }
+
+    .marker {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      max-width: 100%;
+      min-height: 25px;
+      padding: 4px 7px;
+      border: 1px dashed #95a5ba;
+      border-radius: 7px;
+      color: #3e4b5d;
+      background: #f8fafc;
+      font-size: 0.76rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 850px;
+      border-collapse: collapse;
+      background: #ffffff;
+    }
+
+    th,
+    td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef3f8;
+      color: #4c596b;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    td {
+      color: #2e3848;
+      line-height: 1.42;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .empty-state {
+      display: none;
+      padding: 24px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .backlog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .backlog-card {
+      padding: 16px;
+      min-height: 210px;
+    }
+
+    .backlog-card h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .footer-band {
+      margin-top: 24px;
+      padding: 16px 0 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+
+    .is-hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 1040px) {
+      .kpi-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .insight-grid,
+      .focus-grid,
+      .quality-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 820px) {
+      .hero-grid,
+      .filters,
+      .sprint-grid,
+      .backlog-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .gantt-wrap {
+        overflow-x: auto;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .hero-inner,
+      .section-inner,
+      .tab-nav {
+        width: min(100% - 24px, 1180px);
+      }
+
+      .topline,
+      .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .kpi-grid,
+      .insight-grid,
+      .focus-grid,
+      .quality-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .metric-row {
+        grid-template-columns: minmax(100px, 1fr) minmax(96px, 1fr) 66px;
+      }
+
+      .brand h1 {
+        font-size: 1.55rem;
+      }
+
+      .summary-panel,
+      .doc-chip,
+      .kpi-card,
+      .insight-card,
+      .sprint-card,
+      .backlog-card,
+      .filter-card {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="topline">
+          <div class="brand">
+            <div class="brand-mark" aria-hidden="true">EX</div>
+            <div>
+              <h1>Examia PM Dashboard</h1>
+              <p>Seguimiento ejecutivo de producto, desarrollo y QA</p>
+            </div>
+          </div>
+          <div class="status-pill"><span class="status-dot" aria-hidden="true"></span>Sprint 4 en progreso</div>
+        </div>
+
+        <div class="hero-grid">
+          <section class="summary-panel" aria-labelledby="summary-title">
+            <h2 id="summary-title">Resumen del estado</h2>
+            <p>Examia concentra la creaci&oacute;n, administraci&oacute;n, resoluci&oacute;n digital, pre-correcci&oacute;n asistida por IA y publicaci&oacute;n de notas del primer parcial de Testing de Aplicaciones. Esta vista consolida el avance hasta Sprint 3 y el trabajo activo de Sprint 4 a partir de la documentaci&oacute;n disponible.</p>
+          </section>
+          <div class="doc-stack" aria-label="Versiones documentales">
+            <div class="doc-chip">
+              <div>
+                <strong>Specification Document</strong>
+                <span>Alcance, requerimientos y supuestos</span>
+              </div>
+              <code>Spect V2.0.0</code>
+            </div>
+            <div class="doc-chip">
+              <div>
+                <strong>Historias de Usuario</strong>
+                <span>Epicas e historias US-01 a US-34</span>
+              </div>
+              <code>Historias V3.0.0</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="tab-shell">
+        <div class="tab-nav" role="tablist" aria-label="Vistas del dashboard">
+          <button class="tab-button" id="tab-general" type="button" role="tab" aria-selected="true" aria-controls="panel-general" data-tab-target="general">Resumen General</button>
+          <button class="tab-button" id="tab-sprints" type="button" role="tab" aria-selected="false" aria-controls="panel-sprints" data-tab-target="sprints" tabindex="-1">Sprints y Equipos</button>
+          <button class="tab-button" id="tab-bugs" type="button" role="tab" aria-selected="false" aria-controls="panel-bugs" data-tab-target="bugs" tabindex="-1">Bugs QA</button>
+        </div>
+      </div>
+
+      <div id="panel-general" class="tab-panel" role="tabpanel" aria-labelledby="tab-general" data-tab-panel="general"></div>
+      <div id="panel-sprints" class="tab-panel" role="tabpanel" aria-labelledby="tab-sprints" data-tab-panel="sprints" hidden></div>
+      <div id="panel-bugs" class="tab-panel" role="tabpanel" aria-labelledby="tab-bugs" data-tab-panel="bugs" hidden></div>
+
+      <section class="section" data-dashboard-tab="general">
+        <div class="section-inner">
+          <div class="section-header">
+            <div>
+              <h2>M&eacute;tricas principales</h2>
+              <p>Indicadores inferidos desde `Spect.md`, `stories.md` y el relato de Sprints 0-2.</p>
+            </div>
+            <span class="source-note">Derivadas de documentaci&oacute;n</span>
+          </div>
+
+          <div class="kpi-grid" aria-label="KPIs generales del proyecto">
+            <article class="kpi-card accent-blue">
+              <small>Historias documentadas</small>
+              <div class="kpi-value">34 <span>US</span></div>
+              <p>Desde US-01 hasta US-34 en la versi&oacute;n actual de historias.</p>
+            </article>
+            <article class="kpi-card accent-green">
+              <small>Liberadas hasta Sprint 3</small>
+              <div class="kpi-value">27 <span>US</span></div>
+              <p>US-01 a US-27 refinadas y usadas como base del avance.</p>
+            </article>
+            <article class="kpi-card accent-amber">
+              <small>Historias en Sprint 4</small>
+              <div class="kpi-value">7 <span>US</span></div>
+              <p>US-28 a US-34 est&aacute;n asignadas al sprint activo.</p>
+            </article>
+            <article class="kpi-card accent-cyan">
+              <small>Requerimientos Spect</small>
+              <div class="kpi-value">58</div>
+              <p>Funcionales, no funcionales y seguridad/entorno.</p>
+            </article>
+            <article class="kpi-card accent-violet">
+              <small>Releases QA evaluadas</small>
+              <div class="kpi-value">3</div>
+              <p>QA prob&oacute; las primeras tres releases del flujo.</p>
+            </article>
+            <article class="kpi-card accent-red">
+              <small>Releases Dev destacadas</small>
+              <div class="kpi-value">1.4</div>
+              <p>&Uacute;ltima entrega cerrada al finalizar Sprint 3.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" data-dashboard-tab="sprints">
+        <div class="section-inner">
+          <div class="section-header">
+            <div>
+              <h2>Vista filtrada</h2>
+              <p>El foco seleccionado impacta las tarjetas, la tabla y el Gantt.</p>
+            </div>
+          </div>
+
+          <div class="filters" aria-label="Filtros del dashboard">
+            <section class="filter-card" aria-labelledby="team-filter-title">
+              <h3 id="team-filter-title">Equipo</h3>
+              <div class="segmented" data-filter-group="team">
+                <button type="button" data-filter="Todos" aria-pressed="true">Todos</button>
+                <button type="button" data-filter="PM" aria-pressed="false">PM</button>
+                <button type="button" data-filter="Dev" aria-pressed="false">Dev</button>
+                <button type="button" data-filter="QA" aria-pressed="false">QA</button>
+              </div>
+            </section>
+            <section class="filter-card" aria-labelledby="sprint-filter-title">
+              <h3 id="sprint-filter-title">Sprint</h3>
+              <div class="segmented" data-filter-group="sprint">
+                <button type="button" data-filter="Todos" aria-pressed="true">Todos</button>
+                <button type="button" data-filter="Sprint 0" aria-pressed="false">Sprint 0</button>
+                <button type="button" data-filter="Sprint 1" aria-pressed="false">Sprint 1</button>
+                <button type="button" data-filter="Sprint 2" aria-pressed="false">Sprint 2</button>
+                <button type="button" data-filter="Sprint 3" aria-pressed="false">Sprint 3</button>
+                <button type="button" data-filter="Sprint 4" aria-pressed="false">Sprint 4</button>
+                <button type="button" data-filter="Sprint 5" aria-pressed="false">Sprint 5</button>
+              </div>
+            </section>
+          </div>
+
+          <div class="focus-grid" aria-label="KPIs de la vista filtrada">
+            <article class="focus-card">
+              <small>Entregables visibles</small>
+              <strong id="visibleItems">0</strong>
+              <span>Items de trabajo del filtro actual.</span>
+            </article>
+            <article class="focus-card">
+              <small>Historias visibles</small>
+              <strong id="visibleStories">0</strong>
+              <span>US asociadas a entregables PM/Dev.</span>
+            </article>
+            <article class="focus-card">
+              <small>Releases visibles</small>
+              <strong id="visibleReleases">0</strong>
+              <span>Releases referenciadas en la vista.</span>
+            </article>
+            <article class="focus-card">
+              <small>Datos pendientes</small>
+              <strong id="visiblePending">0</strong>
+              <span>Campos sin dato real de casos QA o velocidad.</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" data-dashboard-tab="sprints">
+        <div class="section-inner">
+          <div class="section-header">
+            <div>
+              <h2>Avance por sprint</h2>
+              <p>Resumen de trabajo completado por etapa.</p>
+            </div>
+          </div>
+
+          <div class="sprint-grid">
+            <article class="sprint-card" data-sprint-card="Sprint 0">
+              <header>
+                <h3>Sprint 0: Discovery</h3>
+                <span class="badge badge-done">Completado</span>
+              </header>
+              <ul>
+                <li>PM defini&oacute; el Spect inicial y el problema de negocio.</li>
+                <li>Dev seleccion&oacute; el stack relevante para la implementaci&oacute;n.</li>
+                <li>Se estableci&oacute; la base de alcance para Examia.</li>
+              </ul>
+            </article>
+            <article class="sprint-card" data-sprint-card="Sprint 1">
+              <header>
+                <h3>Sprint 1: First release</h3>
+                <span class="badge badge-done">Completado</span>
+              </header>
+              <ul>
+                <li>PM mejor&oacute; Spect y gener&oacute; US-01 a US-05.</li>
+                <li>Dev entreg&oacute; la primera release funcional.</li>
+                <li>QA defini&oacute; estrategia, planes y casos de prueba.</li>
+              </ul>
+            </article>
+            <article class="sprint-card" data-sprint-card="Sprint 2">
+              <header>
+                <h3>Sprint 2: Releases 1.2 y 1.3</h3>
+                <span class="badge badge-done">Completado</span>
+              </header>
+              <ul>
+                <li>PM refin&oacute; documentaci&oacute;n y liber&oacute; US-06 a US-24.</li>
+                <li>Dev public&oacute; releases 1.2 y 1.3 basadas en esas historias.</li>
+                <li>QA prob&oacute; las primeras tres releases y report&oacute; bugs en 1.3.</li>
+              </ul>
+            </article>
+            <article class="sprint-card" data-sprint-card="Sprint 3">
+              <header>
+                <h3>Sprint 3: Entorno estudiante</h3>
+                <span class="badge badge-done">Completado</span>
+              </header>
+              <ul>
+                <li>Historias asignadas: US-25 a US-27.</li>
+                <li>Foco en contador, autoguardado, alertas y env&iacute;o del examen.</li>
+                <li>QA report&oacute; 11 bugs asociados al cierre del sprint.</li>
+              </ul>
+            </article>
+            <article class="sprint-card" data-sprint-card="Sprint 4">
+              <header>
+                <h3>Sprint 4: IA, notas y antifraude</h3>
+                <span class="badge badge-progress">En progreso</span>
+              </header>
+              <ul>
+                <li>Historias asignadas: US-28 a US-34.</li>
+                <li>Incluye pre-correcci&oacute;n, publicaci&oacute;n, contingencia y monitoreo.</li>
+                <li>QA est&aacute; preparando cobertura de correcci&oacute;n, auditor&iacute;a y dashboard anal&iacute;tico.</li>
+              </ul>
+            </article>
+            <article class="sprint-card" data-sprint-card="Sprint 5">
+              <header>
+                <h3>Sprint 5: UAT final</h3>
+                <span class="badge badge-risk">Planificado</span>
+              </header>
+              <ul>
+                <li>No tiene historias asignadas inicialmente.</li>
+                <li>Dev queda enfocado en bug fixing sobre la versi&oacute;n final.</li>
+                <li>QA ejecuta UAT y reporta bugs de aceptaci&oacute;n.</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" data-dashboard-tab="general">
+        <div class="section-inner">
+          <div class="section-header">
+            <div>
+              <h2>Insights ejecutivos</h2>
+              <p>Lectura PM del avance y los riesgos abiertos.</p>
+            </div>
+          </div>
+
+          <div class="insight-grid">
+            <article class="insight-card accent-green">
+              <h3>Expansi&oacute;n funcional</h3>
+              <ul class="insight-list">
+                <li>Sprint 3 cerr&oacute; el entorno digital real de resoluci&oacute;n para alumnos.</li>
+                <li>Sprint 4 activa correcci&oacute;n IA, publicaci&oacute;n y monitoreo antifraude.</li>
+              </ul>
+            </article>
+            <article class="insight-card accent-blue">
+              <h3>Cobertura inicial fuerte</h3>
+              <ul class="insight-list">
+                <li>Autenticaci&oacute;n, recuperaci&oacute;n, registro y acceso quedan documentados.</li>
+                <li>Dashboard docente y flujo de creaci&oacute;n tienen criterios concretos.</li>
+              </ul>
+            </article>
+            <article class="insight-card accent-amber">
+              <h3>Riesgo pendiente</h3>
+              <ul class="insight-list">
+                <li>US-28 a US-34 est&aacute;n en progreso en Sprint 4.</li>
+                <li>Son capacidades cr&iacute;ticas para cerrar correcci&oacute;n, publicaci&oacute;n y auditor&iacute;a.</li>
+              </ul>
+            </article>
+            <article class="insight-card accent-red">
+              <h3>Calidad y bugs</h3>
+              <ul class="insight-list">
+                <li>QA report&oacute; 22 bugs acumulados entre Sprints 2 y 3.</li>
+                <li>Sprint 3 aport&oacute; 11 bugs nuevos; todos siguen abiertos en Bugs.csv.</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" data-dashboard-tab="bugs">
+        <div class="section-inner">
+          <div class="section-header">
+            <div>
+              <h2>M&eacute;tricas de Bugs QA</h2>
+              <p>Indicadores calculados desde el snapshot embebido de Bugs.csv. El filtro de sprint tambi&eacute;n actualiza esta secci&oacute;n.</p>
+            </div>
+            <span class="source-note">Snapshot Bugs.csv</span>
+          </div>
+
+          <div class="kpi-grid" aria-label="KPIs de bugs QA">
+            <article class="kpi-card accent-red">
+              <small>Bugs reportados</small>
+              <div class="kpi-value" id="bugTotal">0</div>
+              <p>Total de hallazgos registrados por QA.</p>
+            </article>
+            <article class="kpi-card accent-amber">
+              <small>Bugs abiertos</small>
+              <div class="kpi-value" id="bugOpen">0</div>
+              <p>Estados Nuevo o En Desarrollo.</p>
+            </article>
+            <article class="kpi-card accent-green">
+              <small>Bugs resueltos</small>
+              <div class="kpi-value" id="bugResolved">0</div>
+              <p>Estados Fixeado o Cerrado.</p>
+            </article>
+            <article class="kpi-card accent-blue">
+              <small>Resoluci&oacute;n total</small>
+              <div class="kpi-value" id="bugResolutionRate">0%</div>
+              <p>Porcentaje de bugs resueltos sobre el total filtrado.</p>
+            </article>
+            <article class="kpi-card accent-violet">
+              <small>Cr&iacute;tico / Alto</small>
+              <div class="kpi-value" id="bugCriticalHighRate">0%</div>
+              <p>Concentraci&oacute;n de severidad alta para priorizar remediaci&oacute;n.</p>
+            </article>
+            <article class="kpi-card accent-cyan">
+              <small>Top equipo QA</small>
+              <div class="kpi-value" id="bugTopReporter">-</div>
+              <p id="bugTopReporterDetail">Sin bugs para el filtro actual.</p>
+            </article>
+          </div>
+
+          <div class="quality-grid">
+            <article class="metric-panel">
+              <h3>% resuelto por prioridad</h3>
+              <div class="metric-list" id="priorityMetrics"></div>
+            </article>
+            <article class="metric-panel">
+              <h3>% resuelto por severidad</h3>
+              <div class="metric-list" id="severityMetrics"></div>
+            </article>
+            <article class="metric-panel">
+              <h3>Bugs por equipo QA</h3>
+              <div class="metric-list" id="qaTeamMetrics"></div>
+            </article>
+            <article class="metric-panel">
+              <h3>Bugs por tipo</h3>
+              <div class="metric-list" id="typeMetrics"></div>
+            </article>
+            <article class="metric-panel">
+              <h3>Bugs por estado</h3>
+              <div class="metric-list" id="statusMetrics"></div>
+            </article>
+            <article class="metric-panel">
+              <h3>Historias m&aacute;s afectadas</h3>
+              <table class="mini-table">
+                <thead>
+                  <tr>
+                    <th>Historia / t&iacute;tulo</th>
+                    <th>Bugs</th>
+                  </tr>
+                </thead>
+                <tbody id="affectedStories"></tbody>
+              </table>
+            </article>
+          </div>
+
+          <div class="footer-band">
+            <strong>Nota de calidad:</strong> las m&eacute;tricas usan un snapshot embebido de Bugs.csv. Para reflejar nuevos hallazgos o cambios de estado, se debe actualizar el dataset del HTML.
+          </div>
+        </div>
+      </section>
+
+      <section class="section" data-dashboard-tab="general">
+        <div class="section-inner">
+          <div class="section-header">
+            <div>
+              <h2>Gantt de trabajo</h2>
+              <p>Distribuci&oacute;n visual por equipo, sprint y tipo de actividad.</p>
+            </div>
+          </div>
+
+          <div class="gantt-wrap" aria-label="Gantt de trabajo por equipo">
+            <div class="gantt" id="gantt">
+              <div class="gantt-head">
+                <div>Equipo</div>
+                <div>Sprint 0</div>
+                <div>Sprint 1</div>
+                <div>Sprint 2</div>
+                <div>Sprint 3</div>
+                <div>Sprint 4</div>
+                <div>Sprint 5</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" data-dashboard-tab="sprints">
+        <div class="section-inner">
+          <div class="section-header">
+            <div>
+              <h2>Trabajo realizado</h2>
+              <p>Entregables consolidados de PM, Dev y QA.</p>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Sprint</th>
+                  <th>Equipo</th>
+                  <th>Entregable</th>
+                  <th>Historias/Releases</th>
+                  <th>Estado</th>
+                  <th>Evidencia</th>
+                </tr>
+              </thead>
+              <tbody id="workTableBody"></tbody>
+            </table>
+            <div class="empty-state" id="emptyState">No hay entregables para el filtro seleccionado.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" data-dashboard-tab="general">
+        <div class="section-inner">
+          <div class="section-header">
+            <div>
+              <h2>Roadmap</h2>
+              <p>Sprint 3 ya cerrado, Sprint 4 activo y UAT final sin historias iniciales.</p>
+            </div>
+            <span class="source-note">7 historias en progreso</span>
+          </div>
+
+          <div class="backlog-grid">
+            <article class="backlog-card accent-cyan">
+              <h3>Sprint 3: Entorno estudiante</h3>
+              <span class="badge badge-done">Completado</span>
+              <ul>
+                <li>Contador regresivo y autoguardado cada 60 segundos.</li>
+                <li>Alertas por vencimiento a 30 y 15 minutos.</li>
+                <li>Env&iacute;o manual/autom&aacute;tico y 11 bugs reportados al cierre.</li>
+              </ul>
+            </article>
+            <article class="backlog-card accent-violet">
+              <h3>Sprint 4: IA, notas y antifraude</h3>
+              <span class="badge badge-progress">US-28 a US-34</span>
+              <ul>
+                <li>Pre-correcci&oacute;n asistida por IA con justificaci&oacute;n.</li>
+                <li>Publicaci&oacute;n de notas, contingencia y respaldo PDF.</li>
+                <li>Monitoreo antifraude y dashboard anal&iacute;tico post-examen.</li>
+              </ul>
+            </article>
+            <article class="backlog-card accent-red">
+              <h3>Sprint 5: UAT final</h3>
+              <span class="badge badge-risk">Sin US iniciales</span>
+              <ul>
+                <li>Testing de aceptaci&oacute;n sobre la versi&oacute;n final posterior a Sprint 4.</li>
+                <li>Dev enfocado en bug fixing.</li>
+                <li>QA enfocado en ejecuci&oacute;n UAT y reporte de bugs.</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="footer-band">
+            <strong>Nota de datos:</strong> los bugs, su severidad, prioridad y estado provienen de Bugs.csv. Los test cases ejecutados y la velocidad de equipo no provienen de una herramienta operativa en este repositorio.
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const workItems = [
+      {
+        sprint: "Sprint 0",
+        team: "PM",
+        type: "doc",
+        deliverable: "Definicion de Spect inicial",
+        scope: "Requerimientos base",
+        status: "Completado",
+        evidence: "Spect.md",
+        storyCount: 0,
+        releases: [],
+        pending: 0
+      },
+      {
+        sprint: "Sprint 0",
+        team: "Dev",
+        type: "dev",
+        deliverable: "Seleccion de stack relevante",
+        scope: "Arquitectura inicial",
+        status: "Completado",
+        evidence: "Narrativa Sprint 0",
+        storyCount: 0,
+        releases: [],
+        pending: 1
+      },
+      {
+        sprint: "Sprint 1",
+        team: "PM",
+        type: "doc",
+        deliverable: "Mejora de Spect y generacion de historias iniciales",
+        scope: "US-01 a US-05",
+        status: "Completado",
+        evidence: "stories.md",
+        storyCount: 5,
+        releases: [],
+        pending: 0
+      },
+      {
+        sprint: "Sprint 1",
+        team: "Dev",
+        type: "dev",
+        deliverable: "Primera release funcional",
+        scope: "US-01 a US-05 / Release 1.0",
+        status: "Completado",
+        evidence: "Narrativa Sprint 1",
+        storyCount: 5,
+        releases: ["1.0"],
+        pending: 0
+      },
+      {
+        sprint: "Sprint 1",
+        team: "QA",
+        type: "qa",
+        deliverable: "Estrategia QA, planes y casos",
+        scope: "US-01 a US-05 / Plan de pruebas inicial",
+        status: "Completado",
+        evidence: "Narrativa Sprint 1",
+        storyCount: 5,
+        releases: [],
+        pending: 1
+      },
+      {
+        sprint: "Sprint 2",
+        team: "PM",
+        type: "doc",
+        deliverable: "Refinamiento documental y release de historias",
+        scope: "US-06 a US-24",
+        status: "Completado",
+        evidence: "stories.md",
+        storyCount: 19,
+        releases: [],
+        pending: 0
+      },
+      {
+        sprint: "Sprint 2",
+        team: "Dev",
+        type: "dev",
+        deliverable: "Entrega de releases basadas en historias refinadas",
+        scope: "US-06 a US-24 / Release 1.2 y 1.3",
+        status: "Completado",
+        evidence: "Narrativa Sprint 2",
+        storyCount: 19,
+        releases: ["1.2", "1.3"],
+        pending: 0
+      },
+      {
+        sprint: "Sprint 2",
+        team: "QA",
+        type: "qa",
+        deliverable: "Testing de primeras tres releases",
+        scope: "US-06 a US-24 / Releases 1.0, 1.2 y 1.3",
+        status: "Completado",
+        evidence: "Narrativa Sprint 2",
+        storyCount: 19,
+        releases: ["1.0", "1.2", "1.3"],
+        pending: 1
+      },
+      {
+        sprint: "Sprint 2",
+        team: "QA",
+        type: "bug",
+        deliverable: "Reporte de bugs encontrados en test runs",
+        scope: "11 bugs / Release 1.3",
+        status: "Completado",
+        evidence: "Bugs.csv",
+        storyCount: 0,
+        releases: ["1.3"],
+        pending: 0
+      },
+      {
+        sprint: "Sprint 3",
+        team: "PM",
+        type: "doc",
+        deliverable: "Planificacion de entorno digital del estudiante",
+        scope: "US-25 a US-27",
+        status: "Completado",
+        evidence: "stories.md",
+        storyCount: 3,
+        releases: [],
+        pending: 0
+      },
+      {
+        sprint: "Sprint 3",
+        team: "Dev",
+        type: "dev",
+        deliverable: "Implementacion del entorno de resolucion",
+        scope: "US-25 a US-27",
+        status: "Completado",
+        evidence: "stories.md",
+        storyCount: 3,
+        releases: [],
+        pending: 0
+      },
+      {
+        sprint: "Sprint 3",
+        team: "QA",
+        type: "qa",
+        deliverable: "Preparacion de pruebas del entorno estudiante",
+        scope: "US-25 a US-27 / 11 bugs reportados",
+        status: "Completado",
+        evidence: "stories.md",
+        storyCount: 3,
+        releases: [],
+        pending: 0
+      },
+      {
+        sprint: "Sprint 3",
+        team: "QA",
+        type: "bug",
+        deliverable: "Reporte de bugs encontrados en Sprint 3",
+        scope: "11 bugs / QA 1.4",
+        status: "Completado",
+        evidence: "Bugs.csv",
+        storyCount: 0,
+        releases: ["1.4"],
+        pending: 0
+      },
+      {
+        sprint: "Sprint 4",
+        team: "PM",
+        type: "doc",
+        deliverable: "Planificacion de correccion IA, notas y auditoria",
+        scope: "US-28 a US-34",
+        status: "En progreso",
+        evidence: "stories.md",
+        storyCount: 7,
+        releases: [],
+        pending: 0
+      },
+      {
+        sprint: "Sprint 4",
+        team: "Dev",
+        type: "dev",
+        deliverable: "Implementacion de IA, publicacion y monitoreo",
+        scope: "US-28 a US-34",
+        status: "En progreso",
+        evidence: "stories.md",
+        storyCount: 7,
+        releases: [],
+        pending: 0
+      },
+      {
+        sprint: "Sprint 4",
+        team: "QA",
+        type: "qa",
+        deliverable: "Pruebas de correccion, publicacion y antifraude",
+        scope: "US-28 a US-34",
+        status: "En progreso",
+        evidence: "stories.md",
+        storyCount: 7,
+        releases: [],
+        pending: 0
+      },
+      {
+        sprint: "Sprint 5",
+        team: "Dev",
+        type: "bug",
+        deliverable: "Bug fixing sobre version final",
+        scope: "UAT / Sin historias iniciales",
+        status: "Planificado",
+        evidence: "Plan UAT",
+        storyCount: 0,
+        releases: [],
+        pending: 0
+      },
+      {
+        sprint: "Sprint 5",
+        team: "QA",
+        type: "qa",
+        deliverable: "Ejecucion UAT y reporte de bugs",
+        scope: "UAT / Sin historias iniciales",
+        status: "Planificado",
+        evidence: "Plan UAT",
+        storyCount: 0,
+        releases: [],
+        pending: 0
+      }
+    ];
+
+    const bugItems = [
+      {
+        id: "BUG-001",
+        reporter: "QA-6",
+        story: "US-01: Login del Docente con credenciales propias",
+        sprint: "2",
+        severity: "Crítico",
+        priority: "P2",
+        title: "login - mensaje de error revela la inexistencia de usuario",
+        type: "Seguridad",
+        status: "Nuevo",
+        discoveredAt: "25/05/2026",
+        fixedAt: "-",
+        release: "Version 1.3.0"
+      },
+      {
+        id: "BUG-002",
+        reporter: "QA-2",
+        story: "US-03: Login del Alumno con credenciales propias",
+        sprint: "2",
+        severity: "Alto",
+        priority: "P1",
+        title: "Login carece de rate limiting / protección contra fuerza bruta",
+        type: "Seguridad",
+        status: "Nuevo",
+        discoveredAt: "25/05/2026",
+        fixedAt: "-",
+        release: "Version 1.3.0"
+      },
+      {
+        id: "BUG-003",
+        reporter: "QA-2",
+        story: "Login de Usuario - Cierre de Sesión",
+        sprint: "2",
+        severity: "Alto",
+        priority: "P1",
+        title: "Logout no invalida el JWT en el servidor",
+        type: "Seguridad",
+        status: "Nuevo",
+        discoveredAt: "25/05/2026",
+        fixedAt: "-",
+        release: "Version 1.3.0"
+      },
+      {
+        id: "BUG-004",
+        reporter: "QA-7",
+        story: "US-03: Login del Alumno con credenciales propias",
+        sprint: "2",
+        severity: "Crítico",
+        priority: "P1",
+        title: "Block - acceso UADE válido denegado",
+        type: "Funcional",
+        status: "Nuevo",
+        discoveredAt: "25/05/2026",
+        fixedAt: "-",
+        release: "Version 1.3.0"
+      },
+      {
+        id: "BUG-005",
+        reporter: "QA-7",
+        story: "US-04: Login del Alumno con usuario UADE",
+        sprint: "2",
+        severity: "Crítico",
+        priority: "P1",
+        title: "Block - credenciales correctas con legajo incorrecto muestran error no específico",
+        type: "Funcional",
+        status: "Nuevo",
+        discoveredAt: "25/05/2026",
+        fixedAt: "-",
+        release: "Version 1.3.0"
+      },
+      {
+        id: "BUG-006",
+        reporter: "QA-7",
+        story: "US-06: Recuperación de contraseña — Envío del código",
+        sprint: "2",
+        severity: "Crítico",
+        priority: "P1",
+        title: "Block - recuperación de contraseña abre pantalla vacía",
+        type: "Funcional",
+        status: "Nuevo",
+        discoveredAt: "25/05/2026",
+        fixedAt: "-",
+        release: "Version 1.3.0"
+      },
+      {
+        id: "BUG-007",
+        reporter: "QA-7",
+        story: "US-09: Registro de nuevo usuario",
+        sprint: "2",
+        severity: "Medio",
+        priority: "P3",
+        title: "Improvement - términos y condiciones sin link de lectura",
+        type: "UX/UI",
+        status: "Nuevo",
+        discoveredAt: "25/05/2026",
+        fixedAt: "-",
+        release: "Version 1.3.0"
+      },
+      {
+        id: "BUG-008",
+        reporter: "QA-7",
+        story: "US-09: Registro de nuevo usuario",
+        sprint: "2",
+        severity: "Alto",
+        priority: "P1",
+        title: "Improvement - selección de rol sin requisitos visibles",
+        type: "UX/UI",
+        status: "Nuevo",
+        discoveredAt: "25/05/2026",
+        fixedAt: "-",
+        release: "Version 1.3.0"
+      },
+      {
+        id: "BUG-009",
+        reporter: "QA-7",
+        story: "US-09: Registro de nuevo usuario",
+        sprint: "2",
+        severity: "Crítico",
+        priority: "P1",
+        title: "Block - no permite creación de cuenta docente o alumno",
+        type: "Funcional",
+        status: "Nuevo",
+        discoveredAt: "25/05/2026",
+        fixedAt: "-",
+        release: "Version 1.3.0"
+      },
+      {
+        id: "BUG-010",
+        reporter: "QA-7",
+        story: "US-11: Visualización del Dashboard de Mis Cursos",
+        sprint: "2",
+        severity: "Alto",
+        priority: "P2",
+        title: "Improvement - columna Estado de examen muestra guión",
+        type: "Datos",
+        status: "Nuevo",
+        discoveredAt: "25/05/2026",
+        fixedAt: "-",
+        release: "Version 1.3.0"
+      },
+      {
+        id: "BUG-011",
+        reporter: "QA-7",
+        story: "US-11: Visualización del Dashboard de Mis Cursos",
+        sprint: "2",
+        severity: "Crítico",
+        priority: "P1",
+        title: "Block - botón Corregir no permite ingresar a exámenes",
+        type: "Funcional",
+        status: "Nuevo",
+        discoveredAt: "25/05/2026",
+        fixedAt: "-",
+        release: "Version 1.3.0"
+      },
+      {
+        id: "BUG-012",
+        reporter: "QA-2",
+        story: "Autorizacion por roles en endpoints protegidos",
+        sprint: "3",
+        severity: "Alto",
+        priority: "P2",
+        title: "Endpoints con @PreAuthorize devuelven HTTP 500 en vez de 403 cuando el rol no autoriza",
+        type: "Funcional",
+        status: "Nuevo",
+        discoveredAt: "25/05/2026",
+        fixedAt: "",
+        release: "v1.3"
+      },
+      {
+        id: "BUG-013",
+        reporter: "QA-2",
+        story: "US-04: Login del Alumno con usuario UADE",
+        sprint: "3",
+        severity: "Bajo",
+        priority: "P3",
+        title: "AuthResponse del login UADE no devuelve el campo legajo",
+        type: "Funcional",
+        status: "Nuevo",
+        discoveredAt: "25/05/2026",
+        fixedAt: "",
+        release: "Version 1.3.2"
+      },
+      {
+        id: "BUG-014",
+        reporter: "QA-2",
+        story: "Validacion debil de contrasena en registro",
+        sprint: "3",
+        severity: "Medio",
+        priority: "P2",
+        title: "El sistema permite crear contrasenas inseguras sin validaciones de complejidad",
+        type: "Improvement",
+        status: "Nuevo",
+        discoveredAt: "25/05/2026",
+        fixedAt: "",
+        release: "v1.3"
+      },
+      {
+        id: "BUG-015",
+        reporter: "QA-3",
+        story: "US-10: Registro de nuevo usuario",
+        sprint: "3",
+        severity: "Alto",
+        priority: "P2",
+        title: "El sistema permite continuar con correo de recuperacion igual al correo principal",
+        type: "Funcional",
+        status: "Nuevo",
+        discoveredAt: "31/05/2026",
+        fixedAt: "",
+        release: "Version 1.3.4"
+      },
+      {
+        id: "BUG-016",
+        reporter: "QA-4",
+        story: "US-22: Organizacion de preguntas por temas",
+        sprint: "3",
+        severity: "Alto",
+        priority: "P1",
+        title: "El sistema no respeta el limite de 5 temas por examen",
+        type: "Funcional",
+        status: "Nuevo",
+        discoveredAt: "25/05/2026",
+        fixedAt: "",
+        release: "Version 1.3.5"
+      },
+      {
+        id: "BUG-017",
+        reporter: "QA-4",
+        story: "US-23: Guardar examen como borrador",
+        sprint: "3",
+        severity: "Alto",
+        priority: "P1",
+        title: "No se puede retomar borrador de examen",
+        type: "Funcional",
+        status: "Nuevo",
+        discoveredAt: "25/05/2026",
+        fixedAt: "",
+        release: "Version 1.3.6"
+      },
+      {
+        id: "BUG-018",
+        reporter: "QA-5",
+        story: "US-25: Generacion de acceso por tema - Paso 3",
+        sprint: "3",
+        severity: "Alto",
+        priority: "P1",
+        title: "Boton 'Turno' no funcional: no navega a pantalla de generacion de accesos",
+        type: "Funcional",
+        status: "Nuevo",
+        discoveredAt: "26/05/2026",
+        fixedAt: "",
+        release: "Version 1.3.7"
+      },
+      {
+        id: "BUG-019",
+        reporter: "QA-4",
+        story: "US-16: Configuracion inicial del examen - Paso 1",
+        sprint: "3",
+        severity: "Medio",
+        priority: "P2",
+        title: "Manejo de errores no claro en campos requeridos de preguntas",
+        type: "UX/UI",
+        status: "Nuevo",
+        discoveredAt: "25/05/2026",
+        fixedAt: "",
+        release: "Version 1.3.8"
+      },
+      {
+        id: "BUG-020",
+        reporter: "QA-7",
+        story: "US-01: Login del Docente con credenciales propias",
+        sprint: "3",
+        severity: "Crítico",
+        priority: "P1",
+        title: "El sistema almacena el rol del usuario en localStorage y permite escalada de privilegios",
+        type: "Seguridad",
+        status: "Nuevo",
+        discoveredAt: "26/05/2026",
+        fixedAt: "",
+        release: "Version 1.3.9"
+      },
+      {
+        id: "BUG-021",
+        reporter: "QA-7",
+        story: "US-20: Agregar preguntas de multiple choice al examen",
+        sprint: "3",
+        severity: "Medio",
+        priority: "P2",
+        title: "El sistema permite agregar opciones de multiple choice sin respetar el limite de 5",
+        type: "Funcional",
+        status: "Nuevo",
+        discoveredAt: "26/05/2026",
+        fixedAt: "",
+        release: "Version 1.3.10"
+      },
+      {
+        id: "BUG-022",
+        reporter: "QA-7",
+        story: "US-04: Login del Alumno con usuario UADE",
+        sprint: "3",
+        severity: "Alto",
+        priority: "P1",
+        title: "Degradacion severa del backend de login UADE bajo carga concurrente",
+        type: "Performance",
+        status: "Nuevo",
+        discoveredAt: "26/05/2026",
+        fixedAt: "",
+        release: "Version 1.3.11"
+      }
+    ];
+
+    const teams = ["PM", "Dev", "QA"];
+    const sprints = ["Sprint 0", "Sprint 1", "Sprint 2", "Sprint 3", "Sprint 4", "Sprint 5"];
+    const releasedStoriesBySprint = {
+      "Sprint 0": 0,
+      "Sprint 1": 5,
+      "Sprint 2": 19,
+      "Sprint 3": 3,
+      "Sprint 4": 7,
+      "Sprint 5": 0
+    };
+    const state = {
+      team: "Todos",
+      sprint: "Todos"
+    };
+
+    const typeLabels = {
+      doc: "Documentacion",
+      dev: "Desarrollo",
+      qa: "Testing",
+      bug: "Bugs"
+    };
+
+    const typeBadgeClass = {
+      PM: "badge-doc",
+      Dev: "badge-dev",
+      QA: "badge-qa"
+    };
+    const resolvedBugStatuses = new Set(["Fixeado", "Cerrado"]);
+    const priorityOrder = ["P1", "P2", "P3", "P4"];
+    const severityOrder = ["Crítico", "Alto", "Medio", "Bajo"];
+    const statusOrder = ["Nuevo", "En Desarrollo", "Fixeado", "Cerrado"];
+    const bugTypeOrder = ["Seguridad", "Funcional", "UX/UI", "Datos", "Performance", "Improvement"];
+
+    function matchesFilters(item) {
+      const teamMatch = state.team === "Todos" || item.team === state.team;
+      const sprintMatch = state.sprint === "Todos" || item.sprint === state.sprint;
+      return teamMatch && sprintMatch;
+    }
+
+    function renderGantt() {
+      const gantt = document.getElementById("gantt");
+      const gridTemplate = `132px repeat(${sprints.length}, minmax(190px, 1fr))`;
+      const rows = teams.map((team) => {
+        const cells = sprints.map((sprint) => {
+          const items = workItems.filter((item) => item.team === team && item.sprint === sprint);
+          const bars = items.map((item) => {
+            const label = item.type === "bug"
+              ? item.sprint === "Sprint 2"
+                ? "Bugs 1.3"
+                : item.sprint === "Sprint 3"
+                  ? "Bugs 1.4"
+                  : "Bug fixing"
+              : typeLabels[item.type];
+            return `<div class="bar bar-${item.type}" title="${escapeHtml(item.deliverable)}">${label}</div>`;
+          }).join("");
+
+          const markers = releaseMarkers(team, sprint);
+          return `<div class="gantt-cell" data-team="${team}" data-sprint="${sprint}">${bars}${markers}</div>`;
+        }).join("");
+
+        return `<div class="gantt-row"><div class="team-label">${team}</div>${cells}</div>`;
+      }).join("");
+      const headers = sprints.map((sprint) => `<div>${sprint}</div>`).join("");
+
+      gantt.innerHTML = `
+        <div class="gantt-head" style="grid-template-columns: ${gridTemplate}">
+          <div>Equipo</div>
+          ${headers}
+        </div>
+        ${rows.replaceAll('<div class="gantt-row">', `<div class="gantt-row" style="grid-template-columns: ${gridTemplate}">`)}
+      `;
+    }
+
+    function releaseMarkers(team, sprint) {
+      const markerMap = {
+        "Dev|Sprint 1": ["Release 1.0"],
+        "Dev|Sprint 2": ["Release 1.2", "Release 1.3"],
+        "QA|Sprint 2": ["QA 1.0", "QA 1.2", "QA 1.3", "11 bugs"],
+        "Dev|Sprint 3": ["Release 1.4"],
+        "QA|Sprint 3": ["QA 1.4", "11 bugs"],
+        "Dev|Sprint 4": ["Release 1.5"],
+        "QA|Sprint 4": ["QA 1.5"],
+        "Dev|Sprint 5": ["Final UAT build"],
+        "QA|Sprint 5": ["UAT final"]
+      };
+      const key = `${team}|${sprint}`;
+      const markers = markerMap[key] || [];
+
+      return markers
+        .filter(Boolean)
+        .map((marker) => `<span class="marker">${marker}</span>`)
+        .join("");
+    }
+
+    function renderTable() {
+      const visible = workItems.filter(matchesFilters);
+      const tbody = document.getElementById("workTableBody");
+      const empty = document.getElementById("emptyState");
+
+      tbody.innerHTML = visible.map((item) => {
+        const badgeClass = item.status === "Completado"
+          ? "badge-done"
+          : item.status === "En progreso"
+            ? "badge-progress"
+            : "badge-risk";
+        return `
+          <tr>
+            <td>${item.sprint}</td>
+            <td><span class="badge ${typeBadgeClass[item.team]}">${item.team}</span></td>
+            <td>${escapeHtml(item.deliverable)}</td>
+            <td>${escapeHtml(item.scope)}</td>
+            <td><span class="badge ${badgeClass}">${item.status}</span></td>
+            <td>${escapeHtml(item.evidence)}</td>
+          </tr>
+        `;
+      }).join("");
+
+      empty.style.display = visible.length ? "none" : "block";
+    }
+
+    function renderFocusCards() {
+      const visible = workItems.filter(matchesFilters);
+      const visibleSprints = new Set(visible.map((item) => item.sprint));
+      const storyCount = [...visibleSprints].reduce((sum, sprint) => sum + releasedStoriesBySprint[sprint], 0);
+      const releases = new Set(visible.flatMap((item) => item.releases));
+      const pending = visible.reduce((sum, item) => sum + item.pending, 0);
+
+      document.getElementById("visibleItems").textContent = visible.length;
+      document.getElementById("visibleStories").textContent = storyCount;
+      document.getElementById("visibleReleases").textContent = releases.size;
+      document.getElementById("visiblePending").textContent = pending;
+    }
+
+    function renderBugMetrics() {
+      const visible = visibleBugs();
+      const total = visible.length;
+      const resolved = visible.filter(isBugResolved).length;
+      const open = total - resolved;
+      const criticalHigh = visible.filter((bug) => bug.severity === "Crítico" || bug.severity === "Alto").length;
+      const topReporter = topGroup(visible, "reporter");
+
+      document.getElementById("bugTotal").textContent = total;
+      document.getElementById("bugOpen").textContent = open;
+      document.getElementById("bugResolved").textContent = resolved;
+      document.getElementById("bugResolutionRate").textContent = `${percentage(resolved, total)}%`;
+      document.getElementById("bugCriticalHighRate").textContent = `${percentage(criticalHigh, total)}%`;
+      document.getElementById("bugTopReporter").textContent = topReporter ? topReporter.label : "-";
+      document.getElementById("bugTopReporterDetail").textContent = topReporter
+        ? `${topReporter.count} bugs reportados en el filtro actual.`
+        : "Sin bugs para el filtro actual.";
+
+      renderResolutionMetric("priorityMetrics", visible, "priority", priorityOrder);
+      renderResolutionMetric("severityMetrics", visible, "severity", severityOrder);
+      renderCountMetric("qaTeamMetrics", visible, "reporter");
+      renderCountMetric("typeMetrics", visible, "type", bugTypeOrder);
+      renderCountMetric("statusMetrics", visible, "status", statusOrder);
+      renderAffectedStories(visible);
+    }
+
+    function visibleBugs() {
+      return bugItems.filter((bug) => state.sprint === "Todos" || `Sprint ${bug.sprint}` === state.sprint);
+    }
+
+    function isBugResolved(bug) {
+      return resolvedBugStatuses.has(bug.status);
+    }
+
+    function percentage(value, total) {
+      if (!total) {
+        return 0;
+      }
+      return Math.round((value / total) * 100);
+    }
+
+    function groupCounts(items, key) {
+      return items.reduce((groups, item) => {
+        const label = item[key] || "Sin dato";
+        groups[label] = (groups[label] || 0) + 1;
+        return groups;
+      }, {});
+    }
+
+    function topGroup(items, key) {
+      const groups = groupCounts(items, key);
+      const rows = Object.entries(groups)
+        .map(([label, count]) => ({ label, count }))
+        .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+
+      return rows[0] || null;
+    }
+
+    function renderResolutionMetric(targetId, items, key, order) {
+      const rows = order.map((label) => {
+        const groupItems = items.filter((item) => item[key] === label);
+        const resolved = groupItems.filter(isBugResolved).length;
+        return {
+          label,
+          count: groupItems.length,
+          resolved,
+          rate: percentage(resolved, groupItems.length)
+        };
+      });
+
+      document.getElementById(targetId).innerHTML = rows.map((row) => metricRow({
+        label: row.label,
+        subtext: `${row.resolved}/${row.count} resueltos`,
+        percent: row.rate,
+        value: `${row.rate}%`,
+        tone: row.rate === 100 ? "success" : row.rate > 0 ? "warning" : "danger"
+      })).join("");
+    }
+
+    function renderCountMetric(targetId, items, key, preferredOrder) {
+      const counts = groupCounts(items, key);
+      const orderedLabels = preferredOrder
+        ? preferredOrder
+        : Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b));
+      const max = Math.max(1, ...Object.values(counts));
+      const rows = orderedLabels.map((label) => {
+        const count = counts[label] || 0;
+        return {
+          label,
+          count,
+          percent: percentage(count, max)
+        };
+      });
+
+      document.getElementById(targetId).innerHTML = rows.length
+        ? rows.map((row) => metricRow({
+        label: row.label,
+        subtext: `${row.count} bugs`,
+        percent: row.percent,
+        value: row.count,
+        tone: row.label === "Nuevo" || row.label === "Crítico" || row.label === "P1" ? "danger" : ""
+      })).join("")
+        : `<div class="metric-row">
+            <div class="metric-label">Sin datos<span class="metric-subtext">0 bugs</span></div>
+            <div class="progress-track" aria-hidden="true"><div class="progress-fill" style="width: 0%"></div></div>
+            <div class="metric-value">0</div>
+          </div>`;
+    }
+
+    function renderAffectedStories(items) {
+      const counts = groupCounts(items, "story");
+      const rows = Object.entries(counts)
+        .map(([label, count]) => ({ label, count }))
+        .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label))
+        .slice(0, 6);
+
+      document.getElementById("affectedStories").innerHTML = rows.length
+        ? rows.map((row) => `
+          <tr>
+            <td title="${escapeHtml(row.label)}">${escapeHtml(row.label)}</td>
+            <td>${row.count}</td>
+          </tr>
+        `).join("")
+        : `<tr><td colspan="2">Sin bugs para el filtro actual.</td></tr>`;
+    }
+
+    function metricRow({ label, subtext, percent, value, tone }) {
+      const fillClass = tone ? ` ${tone}` : "";
+      const width = Math.max(0, Math.min(100, percent));
+
+      return `
+        <div class="metric-row">
+          <div class="metric-label" title="${escapeHtml(label)}">
+            ${escapeHtml(label)}
+            <span class="metric-subtext">${escapeHtml(subtext)}</span>
+          </div>
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-fill${fillClass}" style="width: ${width}%"></div>
+          </div>
+          <div class="metric-value">${escapeHtml(value)}</div>
+        </div>
+      `;
+    }
+
+    function updateSprintCards() {
+      document.querySelectorAll("[data-sprint-card]").forEach((card) => {
+        const sprint = card.getAttribute("data-sprint-card");
+        card.classList.toggle("is-hidden", state.sprint !== "Todos" && state.sprint !== sprint);
+      });
+    }
+
+    function setFilter(group, value) {
+      state[group] = value;
+
+      document.querySelectorAll(`[data-filter-group="${group}"] button`).forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.filter === value));
+      });
+
+      renderAll();
+    }
+
+    function renderAll() {
+      renderFocusCards();
+      renderBugMetrics();
+      renderGantt();
+      renderTable();
+      updateSprintCards();
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function initDashboardTabs() {
+      document.querySelectorAll("[data-dashboard-tab]").forEach((section) => {
+        const panel = document.querySelector(`[data-tab-panel="${section.dataset.dashboardTab}"]`);
+        if (panel) {
+          panel.appendChild(section);
+        }
+      });
+
+      document.querySelectorAll("[data-tab-target]").forEach((button) => {
+        button.addEventListener("click", () => selectTab(button.dataset.tabTarget));
+        button.addEventListener("keydown", handleTabKeydown);
+      });
+    }
+
+    function selectTab(tabName) {
+      document.querySelectorAll("[data-tab-target]").forEach((button) => {
+        const isActive = button.dataset.tabTarget === tabName;
+        button.setAttribute("aria-selected", String(isActive));
+        button.tabIndex = isActive ? 0 : -1;
+      });
+
+      document.querySelectorAll("[data-tab-panel]").forEach((panel) => {
+        panel.hidden = panel.dataset.tabPanel !== tabName;
+      });
+    }
+
+    function handleTabKeydown(event) {
+      const keys = ["ArrowLeft", "ArrowRight", "Home", "End"];
+      if (!keys.includes(event.key)) {
+        return;
+      }
+
+      event.preventDefault();
+      const tabs = [...document.querySelectorAll("[data-tab-target]")];
+      const currentIndex = tabs.indexOf(event.currentTarget);
+      let nextIndex = currentIndex;
+
+      if (event.key === "ArrowRight") {
+        nextIndex = (currentIndex + 1) % tabs.length;
+      }
+
+      if (event.key === "ArrowLeft") {
+        nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+      }
+
+      if (event.key === "Home") {
+        nextIndex = 0;
+      }
+
+      if (event.key === "End") {
+        nextIndex = tabs.length - 1;
+      }
+
+      const nextTab = tabs[nextIndex];
+      nextTab.focus();
+      selectTab(nextTab.dataset.tabTarget);
+    }
+
+    document.querySelectorAll("[data-filter-group] button").forEach((button) => {
+      button.addEventListener("click", () => {
+        const group = button.closest("[data-filter-group]").dataset.filterGroup;
+        setFilter(group, button.dataset.filter);
+      });
+    });
+
+    initDashboardTabs();
+    renderAll();
+  </script>
+</body>
+</html>

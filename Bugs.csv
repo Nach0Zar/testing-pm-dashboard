@@ -1,0 +1,88 @@
+Bug - ID Global,Equipo Reporta,Bug - ID Equipo,Titulo Story,Sprint detectado,Severidad,Prioridad,Titulo Bug,Descripción Bug,STR,Tipo de bug,Navegador utilizado,Evidencia adicional,Estado,Fecha de Descubrimiento,Fecha de corrección,Versión de Release
+BUG-001,QA-6,BUG-001,US-01: Login del Docente con credenciales propias,2,Crítico,P2,login - mensaje de error revela la inexistencia de usuario,"Al ingresar un mail no registrado en la plataforma, el sistema muestra un mensaje que expone que el usuario no existe. Esto viola el criterio de aceptación especificado en el documento ""Historia de usuario Examia"" donde la US-01 indica que ""El sistema no debe revelar cuál de los campos ingresados es incorrecto"".","1. Ir a la pantalla de Login 
+2. Ingresar un mail no registrado (hola@uade.edu.ar)
+3. Ingresar cualquier contraseña (asd)
+4. Presionar 'Ingresar'",Seguridad,firefox 151.0.1 (64-bit),<link a imagen>,Nuevo,25/05/2026,-,Version 1.3.0
+BUG-002,QA-2,BUG-001,US-03: Login del Alumno con credenciales propias,2,Alto,P1,Login carece de rate limiting / protección contra fuerza bruta,"El endpoint POST /api/auth/login acepta intentos ilimitados de login con passwords incorrectos contra el mismo usuario, sin bloquear la cuenta ni responder HTTP 429. Esto habilita ataques de fuerza bruta sobre cualquier usuario conocido. Tampoco hay limitación a nivel IP.","1. Tomar un email válido del sistema (ej: alumno@uade.edu.ar).
+2. Ejecutar 20 requests POST a /api/auth/login con ese email y password incorrecto, sin esperar entre requests.
+3. Observar el status code de cada response.",Seguridad,N/A — test ejecutado vía pytest + requests contra API,evidencia/BUG-001_rate_limiting.txt,Nuevo,25/05/2026,-,Version 1.3.0
+BUG-003,QA-2,BUG-003,Login de Usuario - Cierre de Sesión,2,Alto,P1,Logout no invalida el JWT en el servidor,"El logout implementado en el frontend solo limpia localStorage (authToken y user). El backend no expone un endpoint /api/auth/logout ni mantiene una blacklist de tokens. Como consecuencia, un JWT emitido sigue siendo válido hasta su expiración natural (24h por defecto) aunque el usuario haya hecho 'cerrar sesión'. Si el token fue interceptado o copiado, el atacante puede seguir usándolo después del logout.","1. Loguearse normalmente y copiar el authToken de localStorage.
+2. Verificar que el token funciona contra un endpoint protegido (GET /api/exams).
+3. Hacer click en 'Cerrar sesión' en la UI (o intentar POST /api/auth/logout con el token, no existe el endpoint).
+4. Reusar el MISMO token contra GET /api/exams.
+5. Observar que el token sigue dando acceso (200) en lugar de ser rechazado (401).",Seguridad,N/A — test ejecutado vía pytest + requests contra API,evidencia/BUG-003_logout_server_side.txt,Nuevo,25/05/2026,-,Version 1.3.0
+BUG-004,QA-7,BUG-002,US-03: Login del Alumno con credenciales propias,2,Crítico,P1,Block - acceso UADE válido denegado,"Se siguieron los pasos descritos en la user story de la funcionalidad y aún colocando los datos correctos del excel de acceso, el mismo fue denegado mostrando un mensaje de error de inicio de sesión con UADE.","01: Ingresar al link de acceso para la plataforma en el navegador.
+ 02: Hacer click en “Ingresar con usuario UADE”.
+ 03: Colocar las credenciales y número de legajo el usuario con rol docente que se encuentra en la lista de usuarios existentes en la lista enviada por el equipo.
+ 04: Accionar el botón “ingresar”.",Funcional,No informado,Link a las imágenes,Nuevo,25/05/2026,-,Version 1.3.0
+BUG-005,QA-7,BUG-003,US-04: Login del Alumno con usuario UADE,2,Crítico,P1,Block - credenciales correctas con legajo incorrecto muestran error no específico,"Se siguieron los pasos descritos en la user story de la funcionalidad, se colocaron credenciales incorrectas según el excel de acceso, el mismo fue denegado mostrando un mensaje de error sobre el inicio de sesión, no sobre las credenciales.","01: Ingresar al link de acceso para la plataforma en el navegador.
+02: Hacer click en “Ingresar con usuario UADE”.
+03: Colocar las credenciales de usuario y contraseña de forma correcta y colocar mal el número de legajo del usuario con rol docente.
+04: Accionar el botón “ingresar”.",Funcional,No informado,Link a las imágenes,Nuevo,25/05/2026,-,Version 1.3.0
+BUG-006,QA-7,BUG-005,US-06: Recuperación de contraseña — Envío del código,2,Crítico,P1,Block - recuperación de contraseña abre pantalla vacía,"No se pudo recuperar la contraseña con el botón '¿Olvidaste tu contraseña?', se genera una pantalla sin nada.","01: En el login, hacer click sobre “¿Olvidaste tu contraseña?”.
+",Funcional,No informado,Link a las imágenes,Nuevo,25/05/2026,-,Version 1.3.0
+BUG-007,QA-7,BUG-010,US-09: Registro de nuevo usuario,2,Medio,P3,Improvement - términos y condiciones sin link de lectura,"En la sección para aceptar términos y condiciones, no incluye ningún link que redireccione a leer los mismos, por lo tanto el usuario no sabe qué está aceptando.",01: Hacer click sobre ‘crear cuenta’ dentro del login para la creación de cuentas.,UI/UX,No informado,Link a las imágenes,Nuevo,25/05/2026,-,Version 1.3.0
+BUG-008,QA-7,BUG-011,US-09: Registro de nuevo usuario,2,Alto,P1,Improvement - selección de rol sin requisitos visibles,"En la sección para seleccionar si el rol de la cuenta a crear es docente o alumno, no hay diferenciaciones visibles sobre requisitos para hacerlo; a primera vista es posible intentar crear una cuenta docente siendo alumno.",01: Hacer click sobre ‘docente’ dentro del login para la creación de usuarios cuando se selecciona un ROL.,UI/UX,No informado,Link a las imágenes,Nuevo,25/05/2026,-,Version 1.3.0
+BUG-009,QA-7,BUG-012,US-09: Registro de nuevo usuario,2,Crítico,P1,Block - no permite creación de cuenta docente o alumno,"El sistema no ha permitido la creación de una nueva cuenta, como rol DOCENTE o ALUMNO.","01: Hacer click sobre ‘crear cuenta’ dentro del login para la creación de cuentas.
+02: Llenar los campos solicitados según las especificaciones.
+03: Crear el usuario haciendo click en 'crear cuenta'.",Funcional,No informado,Link a las imágenes,Nuevo,25/05/2026,-,Version 1.3.0
+BUG-010,QA-7,BUG-013,US-11: Visualización del Dashboard de Mis Cursos,2,Alto,P2,Improvement - columna Estado de examen muestra guión,"El sistema no muestra en detalle el estado del examen (borrador, publicado, activo), sino que muestra un guión.","01: Hacer login con una cuenta de docente válida.
+02: Ingresar al menú de exámenes.
+03: Observar la columna de Estado.",Datos,No informado,Link a las imágenes,Nuevo,25/05/2026,-,Version 1.3.0
+BUG-011,QA-7,BUG-014,US-11: Visualización del Dashboard de Mis Cursos,2,Crítico,P1,Block - botón Corregir no permite ingresar a exámenes,El sistema no permite ingresar a los exámenes con el botón de corregir.,"01: Ingresar al menú de correcciones pendientes.
+02: Clickear en el botón de Corregir.",Funcional,No informado,Link a las imágenes,Nuevo,25/05/2026,-,Version 1.3.0
+BUG-012,QA-2,BUG-004,Autorización por roles en endpoints protegidos,3,Alto,P2,Endpoints con @PreAuthorize devuelven HTTP 500 en vez de 403 cuando el rol no autoriza,"Cuando un usuario autenticado pero con rol insuficiente accede a un endpoint anotado con @PreAuthorize, Spring Security lanza AccessDeniedException, pero el GlobalExceptionHandler no la maneja específicamente. La excepción cae al handler genérico Exception.class y devuelve HTTP 500 con un mensaje vago. El comportamiento correcto es HTTP 403 Forbidden. Esto rompe el contrato de la API: el cliente cree que el server tiene un bug interno cuando en realidad lo que falta son permisos. Descubierto al ejecutar TC-F-LOG-05 contra GET /api/exams con un token de ALUMNO (endpoint que pide DOCENTE).","1. Loguearse como ALUMNO vía POST /api/auth/login (o /api/auth/register).
+2. Tomar el token del response.
+3. GET /api/exams con header Authorization: Bearer <token>.
+4. Observar la respuesta: viene HTTP 500 cuando debería ser HTTP 403.
+5. Reproducir con GET /api/exams/my-exams (mismo patrón).",Funcional,N/A — test ejecutado vía pytest + requests contra API,"evidencia/BUG-004_preauthorize_devuelve_500.txt
+Reporte_Bugs_Login_Automaticos.docx",Nuevo,25/05/2026,,v1.3
+BUG-013,QA-2,BUG-005,US-04: Login del Alumno con usuario UADE,3,Bajo,P3,AuthResponse del login UADE no devuelve el campo legajo,"El endpoint POST /api/auth/login-uade autentica correctamente pero el DTO AuthResponse no incluye el campo 'legajo'. El frontend hace persistSession asumiendo que viene en el response, pero como es undefined se omite y el legajo no queda persistido en localStorage.","1. POST /api/auth/login-uade con legajo, email y password válidos
+2. Inspeccionar el JSON del response
+3. Verificar que NO hay campo 'legajo'
+4. Loguearse vía UI y abrir localStorage en DevTools
+5. Inspeccionar la entrada 'user' → no contiene legajo",Funcional,N/A — test ejecutado vía pytest + requests contra API,https://drive.google.com/file/d/1ukkAEQPVU-6Q0cgWaTYmz_SQpKUnTsIA/view?usp=share_link,Nuevo,25/05/2026,,Version 1.3.2
+BUG-014,QA-2,BUG-006,Validación débil de contraseña en registro,3,Medio,P2,El sistema permite crear contraseñas inseguras sin validaciones de complejidad,"El formulario de registro permite crear cuentas utilizando contraseñas extremadamente débiles como “cc”, ya que actualmente no existen validaciones de complejidad mínimas. Esto representa un riesgo de seguridad y una mala práctica de autenticación. La contraseña debería exigir al menos una combinación de mayúsculas, minúsculas, números y caracteres especiales para garantizar un nivel básico de seguridad en las credenciales de los usuarios.","1. Ingresar a la pantalla de registro.
+2. Completar los datos obligatorios.
+3. Ingresar una contraseña simple, por ejemplo: 'cc'.
+4. Confirmar la misma contraseña.
+5. Enviar el formulario.
+6. Verificar que la cuenta se crea correctamente sin mostrar errores de validación.",Improvement,Frontend Web — validación realizada desde UI en Google ChromePI,Reporte BUG-006.docx,Nuevo,25/05/2026,,v1.3
+BUG-015,QA-3,BUG-003,"US-10: Registro de nuevo usuario
+",3,Alto,P2,El sistema permite continuar con correo de recuperación igual al correo principal,"Al ingresar el mismo correo electrónico en el campo de mail principal y en el de recupero, el sistema crea la cuenta correctamente sin mostrar error, incumpliendo la validación requerida.","1. Ir a la pantalla de registro
+2. Ingresar mail principal (ej: dxuhuang@uade.edu.ar)
+3. Ingresar mail de recupero con el mismo valor
+4. Completar el resto del formulario
+5. Crear cuenta → el sistema lo permite sin error",Funcional,Google Chrome,no hay evidencia ,Nuevo,31/05/2026,,Version 1.3.4
+BUG-016,QA-4,BUG-009,US-22: Organización de preguntas por temas,3,Alto,P1,El sistema no respeta el límite de 5 temas por examen,El sistema no respeta el límite de 5 temas por examen. Se pueden crear más de 5 temas sin restricción; el botón '+ Agregar tema' permanece habilitado y no se muestra mensaje de error.,"1. Crear examen
+2. Agregar 5 temas consecutivamente
+3. Intentar agregar un sexto tema
+4. Verificar que el sistema lo permite sin error ni deshabilitar el botón",Funcional,Google Chrome,no hay evidencia ,Nuevo,25/05/2026,,Version 1.3.5
+BUG-017,QA-4,BUG-010,US-23: Guardar examen como borrador,3,Alto,P1,No se puede retomar borrador de examen,El borrador de examen aparece guardado en el dashboard pero no se puede volver a editar. Al hacer click en el borrador el sistema no permite continuar con la edición.,"1. Crear un examen parcialmente
+2. Guardar como borrador
+3. Volver al dashboard
+4. Hacer click en el borrador guardado
+5. Verificar que no se puede seguir editando",Funcional,Google Chrome,no hay evidencia ,Nuevo,25/05/2026,,Version 1.3.6
+BUG-018,QA-5,BUG-004,US-25: Generación de acceso por tema — Paso 3,3,Alto,P1,Botón 'Turno' no funcional: no navega a pantalla de generación de accesos,"Al hacer click en el botón 'Turno' de cualquier examen en la lista, el sistema no realiza ninguna navegación ni abre ningún modal. Las rutas directas /turno, /respuestas y /acceso redirigen a la lista de exámenes. La pantalla 'Generar Acceso' (Paso 3 del wizard) es completamente inaccesible.","1. Iniciar sesión como Docente
+2. Navegar a Exámenes desde el menú lateral
+3. Hacer click en el botón 'Turno' de cualquier examen
+4. Observar que no ocurre ninguna navegación
+5. Intentar acceder a /docente/examenes/{id}/turno directamente por URL
+6. Verificar que redirige a la lista de exámenes",Funcional,Google Chrome 148.0.7778.179,https://drive.google.com/file/d/1yO-LjIsy_OJk6nrZcTCKp_CjvDzXn-FK/view?usp=sharing,Nuevo,26/05/2026,,Version 1.3.7
+BUG-019,QA-4,BUG-005,US-16: Configuración inicial del examen — Paso 1,3,Medio,P2,Manejo de errores no claro en campos requeridos de preguntas,"Al intentar continuar con campos de enunciado vacíos, el sistema no indica claramente cuál es el error ni cuáles son los campos obligatorios. Los campos required deberían aparecer con asterisco rojo y mensaje descriptivo.","1. Crear examen
+2. Agregar una pregunta sin completar el enunciado
+3. Intentar continuar o guardar
+4. Observar que no se indica claramente cuál es el error ni qué campos son obligatorios",UI/UX,Google Chrome,no hay evidencia ,Nuevo,25/05/2026,,Version 1.3.8
+BUG-020,QA-7,SYS-004,US-01: Login del Docente con credenciales propias,3,Crítico,P1,El sistema almacena el rol del usuario en localStorage y permite escalada de privilegios,El sistema almacena información crítica del usuario (rol) en localStorage. Un usuario con rol ALUMNO puede cambiar manualmente el valor a 'DOCENTE' desde DevTools y acceder a información sensible del panel docente.,"1. Hacer login con una cuenta de alumno válida
+2. Abrir herramientas de desarrollador del navegador
+3. Ir a pestaña Almacenamiento > LocalStorage
+4. Cambiar el rol del usuario a 'DOCENTE'
+5. Verificar que se obtiene acceso al panel docente",Seguridad,No informado, https://docs.google.com/document/d/1yXYBzaQojRirmWGh9SCGH8N5vE71NOw88upMSLP-XsQ/edit?usp=sharing,Nuevo,26/05/2026,,Version 1.3.9
+BUG-021,QA-7,DOC-013,US-20: Agregar preguntas de múltiple choice al examen,3,Medio,P2,El sistema permite agregar opciones de múltiple choice sin respetar el límite de 5,"Al crear una pregunta de tipo múltiple choice, el sistema permite agregar más de 5 opciones sin restricción ni mensaje de error, incumpliendo el criterio de aceptación que establece un máximo de 5 opciones.","1. Ir a la vista de crear examen
+2. Agregar pregunta de tipo múltiple choice
+3. Tocar el botón 'Agregar opción' hasta superar 5 opciones
+4. Verificar que el sistema lo permite sin error",Funcional,No informado,https://docs.google.com/document/d/1yXYBzaQojRirmWGh9SCGH8N5vE71NOw88upMSLP-XsQ/edit?usp=sharing,Nuevo,26/05/2026,,Version 1.3.10
+BUG-022,QA-7,SYS-005,US-04: Login del Alumno con usuario UADE,3,Alto,P1,Degradación severa del backend de login UADE bajo carga concurrente,"Al someter el endpoint /api/auth/login-uade a 20 usuarios virtuales concurrentes durante 1 minuto, el tiempo promedio de respuesta es de 35.43 segundos. El sistema rechaza conexiones por saturación de red y arroja caídas por timeout al agotarse el tiempo de espera.","1. Configurar script K6 con 20 usuarios virtuales concurrentes y 60 segundos de duración
+2. Utilizar credenciales válidas de alumnos UADE
+3. Ejecutar el comando k6 run script.js
+4. Analizar el reporte de métricas HTTP",Performance,No informado,https://docs.google.com/document/d/1yXYBzaQojRirmWGh9SCGH8N5vE71NOw88upMSLP-XsQ/edit?usp=sharing,Nuevo,26/05/2026,,Version 1.3.11
