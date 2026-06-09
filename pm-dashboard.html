@@ -1128,7 +1128,7 @@
               <ul>
                 <li>Historias cerradas: US-28 a US-34.</li>
                 <li>PM sostuvo seguimiento de m&eacute;tricas y bugs, y desarroll&oacute; el plan de UAT.</li>
-                <li>Dev public&oacute; las versiones 1.5 y 1.6; QA teste&oacute; 1.5 y registr&oacute; 21 bugs.</li>
+                <li>Dev public&oacute; las versiones 1.5 y 1.6; QA teste&oacute; 1.5 y registr&oacute; 26 bugs.</li>
               </ul>
             </article>
             <article class="sprint-card" data-sprint-card="Sprint 5">
@@ -1181,7 +1181,7 @@
               <h3>Calidad y bugs</h3>
               <ul class="insight-list">
                 <li>48 bugs registrados en total; 22 resueltos y 26 abiertos.</li>
-                <li>Sprint 4 aport&oacute; 21 bugs nuevos tras el testing QA de release 1.5.</li>
+                <li>Sprint 4 concentra 26 bugs detectados, incluyendo hallazgos reasignados de sprints anteriores.</li>
               </ul>
             </article>
           </div>
@@ -1351,7 +1351,7 @@
               <ul>
                 <li>PM cerr&oacute; seguimiento de m&eacute;tricas, bugs y plan UAT.</li>
                 <li>Dev public&oacute; versiones 1.5 y 1.6 para el cierre del sprint.</li>
-                <li>QA teste&oacute; release 1.5 y registr&oacute; 21 bugs en Bugs.csv.</li>
+                <li>QA teste&oacute; release 1.5 y registr&oacute; 26 bugs en Bugs.csv.</li>
               </ul>
             </article>
             <article class="backlog-card accent-red">
@@ -1477,7 +1477,7 @@
         team: "QA",
         type: "bug",
         deliverable: "Reporte de bugs encontrados en test runs",
-        scope: "13 bugs / Release 1.3",
+        scope: "11 bugs / Release 1.3",
         status: "Completado",
         evidence: "Bugs.csv",
         storyCount: 0,
@@ -1561,7 +1561,7 @@
         team: "QA",
         type: "qa",
         deliverable: "Testing de version 1.5",
-        scope: "Release 1.5 / 21 bugs encontrados",
+        scope: "Release 1.5 / 26 bugs encontrados",
         status: "Completado",
         evidence: "Bugs.csv",
         storyCount: 7,
@@ -1573,7 +1573,7 @@
         team: "QA",
         type: "bug",
         deliverable: "Reporte de bugs encontrados en Sprint 4",
-        scope: "21 bugs / 18 en v1.5 y 3 pendientes de version",
+        scope: "26 bugs / Sprint 4",
         status: "Completado",
         evidence: "Bugs.csv",
         storyCount: 0,
@@ -1919,7 +1919,7 @@
         id: "BUG-023",
         reporter: "QA-2",
         story: "Login de Usuario",
-        sprint: "2",
+        sprint: "4",
         severity: "Bajo",
         priority: "P3",
         title: "Elementos visuales presentan contraste insuficiente",
@@ -1933,7 +1933,7 @@
         id: "BUG-024",
         reporter: "QA-2",
         story: "Login de Usuario",
-        sprint: "2",
+        sprint: "4",
         severity: "Bajo",
         priority: "P4",
         title: "Ausencia de landmark principal en la pantalla de Login",
@@ -2207,7 +2207,7 @@
         status: "Nuevo",
         discoveredAt: "01/06/2026",
         fixedAt: "-",
-        release: "Pendiente",
+        release: "V 1.4",
       },
       {
         id: "BUG-044",
@@ -2241,7 +2241,7 @@
         id: "BUG-046",
         reporter: "QA-6",
         story: "US-24 — Generacion de acceso por Tema",
-        sprint: "1",
+        sprint: "4",
         severity: "Crítico",
         priority: "P1",
         title: "Generación de acceso por tema — Paso 3",
@@ -2255,7 +2255,7 @@
         id: "BUG-047",
         reporter: "QA-6",
         story: "US-24 - Generación de acceso por tema - Paso 3",
-        sprint: "1",
+        sprint: "4",
         severity: "Alto",
         priority: "P2",
         title: "Wizard Paso 3 no permite configurar fecha y horarios del turno",
@@ -2269,7 +2269,7 @@
         id: "BUG-048",
         reporter: "QA-6",
         story: "US-22 - Guardar examen como borrador",
-        sprint: "1",
+        sprint: "4",
         severity: "Medio",
         priority: "P2",
         title: "Botón \"Guardar borrador\" permite múltiples clics durante el guardado",
@@ -2360,11 +2360,11 @@
       const markerMap = {
         "Dev|Sprint 1": ["Release 1.0"],
         "Dev|Sprint 2": ["Release 1.2", "Release 1.3"],
-        "QA|Sprint 2": ["QA 1.0", "QA 1.2", "QA 1.3", "13 bugs"],
+        "QA|Sprint 2": ["QA 1.0", "QA 1.2", "QA 1.3", "11 bugs"],
         "Dev|Sprint 3": ["Release 1.4"],
         "QA|Sprint 3": ["QA 1.4", "11 bugs"],
         "Dev|Sprint 4": ["Release 1.5", "Release 1.6"],
-        "QA|Sprint 4": ["QA 1.5", "21 bugs"],
+        "QA|Sprint 4": ["QA 1.5", "26 bugs"],
         "Dev|Sprint 5": ["Final UAT build"],
         "QA|Sprint 5": ["UAT final"]
       };

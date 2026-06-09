@@ -86,11 +86,11 @@ BUG-022,QA-7,SYS-005,US-04: Login del Alumno con usuario UADE,3,Alto,P1,Degradac
 2. Utilizar credenciales válidas de alumnos UADE
 3. Ejecutar el comando k6 run script.js
 4. Analizar el reporte de métricas HTTP",Performance,No informado,https://docs.google.com/document/d/1yXYBzaQojRirmWGh9SCGH8N5vE71NOw88upMSLP-XsQ/edit?usp=sharing,Fixed,26/05/2026,04/06/2026,Version 1.3.11,
-BUG-023,QA-2,BUG-007,Login de Usuario,2,Bajo,P3,Elementos visuales presentan contraste insuficiente,Lighthouse reporta que determinados elementos de la interfaz no cumplen con la relación mínima de contraste entre texto y fondo recomendada por WCAG. Esto puede afectar la legibilidad para usuarios con dificultades visuales.,"1. Abrir Login.
+BUG-023,QA-2,BUG-007,Login de Usuario,4,Bajo,P3,Elementos visuales presentan contraste insuficiente,Lighthouse reporta que determinados elementos de la interfaz no cumplen con la relación mínima de contraste entre texto y fondo recomendada por WCAG. Esto puede afectar la legibilidad para usuarios con dificultades visuales.,"1. Abrir Login.
 2. Ejecutar Lighthouse.
 3. Revisar sección Accessibility.
 4. Observar alerta ""Background and foreground colors do not have a sufficient contrast ratio"".",Funcional,Chrome - Edge,Evaluación de UX/UI - Lighthouse,Nuevo,2026-05-25,,v1.3,
-BUG-024,QA-2,BUG-008,Login de Usuario,2,Bajo,P4,Ausencia de landmark principal en la pantalla de Login,La auditoría realizada mediante Lighthouse detectó que la página de Login no contiene un elemento semántico principal (<main>). Esto dificulta la navegación mediante lectores de pantalla y herramientas de accesibilidad.,"1. Acceder a la pantalla Login.
+BUG-024,QA-2,BUG-008,Login de Usuario,4,Bajo,P4,Ausencia de landmark principal en la pantalla de Login,La auditoría realizada mediante Lighthouse detectó que la página de Login no contiene un elemento semántico principal (<main>). Esto dificulta la navegación mediante lectores de pantalla y herramientas de accesibilidad.,"1. Acceder a la pantalla Login.
 2. Ejecutar Lighthouse.
 3. Revisar Accessibility y Best Practices.
 4. Observar el mensaje ""Document does not have a main landmark"".",Funcional,Chrome - Edge,Evaluación de UX/UI - Lighthouse,Nuevo,2026-05-25,,v1.3,
@@ -163,19 +163,19 @@ BUG-045,QA-3,BUG-008,"US-27: Finalización y Envío del Examen (Manual vs. Autom
 2. Acceder a un examen con tiempo limitado.
 3. Esperar hasta la finalización del tiempo asignado.
 4. Intentar modificar una respuesta.",funcional,Chrome,,Nuevo,2026-06-01,,Pendiente,
-BUG-046,QA-6,BUG-008,US-24 — Generacion de acceso por Tema,1,Crítico,P1,Generación de acceso por tema — Paso 3,"Al guardar los examentes con un solo tema o mas de uno, el sistema finaliza el alta, con posibilidad de publicar, pero NO se visualiza el link a copiar o qr ","
+BUG-046,QA-6,BUG-008,US-24 — Generacion de acceso por Tema,4,Crítico,P1,Generación de acceso por tema — Paso 3,"Al guardar los examentes con un solo tema o mas de uno, el sistema finaliza el alta, con posibilidad de publicar, pero NO se visualiza el link a copiar o qr ","
 1. Loguarse como docente
 2. Card ""Crear examen""""
 3. Paso 1: Dar de alta preguntas y asignar el puntaje""
 4.Continuar a Paso 2: asignacion de respuesta correcta para todas las preguntas dadas de alta.
 5.Paso3: finalizar
 ",Funcional,Google Chrome 147.0.7727.102 ,,Nuevo,02/06/2026,,Version 1.4.0,
-BUG-047,QA-6,BUG-009,US-24 - Generación de acceso por tema - Paso 3,1,Alto,P2,Wizard Paso 3 no permite configurar fecha y horarios del turno,"Al acceder al Paso 3 del wizard de creación de examen, el sistema no muestra campos para configurar fecha, horario de inicio y horario de cierre. Esto impide validar la duración máxima de 4 horas definida en la historia de usuario US-24.","1. Iniciar sesión como docente
+BUG-047,QA-6,BUG-009,US-24 - Generación de acceso por tema - Paso 3,4,Alto,P2,Wizard Paso 3 no permite configurar fecha y horarios del turno,"Al acceder al Paso 3 del wizard de creación de examen, el sistema no muestra campos para configurar fecha, horario de inicio y horario de cierre. Esto impide validar la duración máxima de 4 horas definida en la historia de usuario US-24.","1. Iniciar sesión como docente
 2. Crear examen
 3. Completar paso 1 y paso 2
 4. Acceder al paso 3
 5. Verificar que no existen campos para fecha, horario de inicio y horario de cierre.",Funcional,Safari 26.4 (21624.1.16.11.4),https://drive.google.com/file/d/1SGY1e4eEqvlBoihj-1hF0EVTPcKdkYDv/view?usp=sharing,Nuevo,02/06/2026,,Version 1.4.0,
-BUG-048,QA-6,BUG-010,US-22 - Guardar examen como borrador,1,Medio,P2,"Botón ""Guardar borrador"" permite múltiples clics durante el guardado
+BUG-048,QA-6,BUG-010,US-22 - Guardar examen como borrador,4,Medio,P2,"Botón ""Guardar borrador"" permite múltiples clics durante el guardado
 ","Al presionar ""Guardar borrador"", el sistema muestra la notificación de éxito pero no deshabilita temporalmente el botón durante el proceso de guardado. El usuario puede realizar múltiples clics consecutivos, incumpliendo el criterio de prevención de doble envío definido para la experiencia de usuario.","1. Iniciar sesión como docente
 2. Crear o editar un examen
 3. Presionar ""Guardar borrador"" varias veces consecutivas
