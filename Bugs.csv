@@ -180,3 +180,41 @@ BUG-048,QA-6,BUG-010,US-22 - Guardar examen como borrador,4,Medio,P2,"Botón ""G
 2. Crear o editar un examen
 3. Presionar ""Guardar borrador"" varias veces consecutivas
 4. Observar el comportamiento del botón durante el guardado",Funcional,Safari 26.4 (21624.1.16.11.4),https://drive.google.com/file/d/1J-LJyyzvVlQHRq0Sn-gTpMe979whBOCI/view?usp=sharing,Nuevo,02/06/2026,,Version 1.4.0,
+,,,,,,,,,,,,,,,,,
+BUG-049,QA-1,BUG-035,US-25 – Rendición del Examen,5,Alto,P1,Pérdida de respuestas al navegar entre temas,"Durante la rendición de un examen, al navegar entre distintos temas las respuestas previamente ingresadas no se conservan correctamente.","1. Iniciar sesión como alumno.
+2. Ingresar a un examen publicado.
+3. Completar respuestas en un tema.
+4. Navegar a otro tema.
+5. Regresar al tema anterior.
+6. Verificar el estado de las respuestas ingresadas.",Funcional,Chrome,,Nuevo,16/06/2026,,v1.6,
+BUG-050,QA-1,BUG-038,US-32 – Sistema de Correos,5,Alto,P1,No se envía correo de notificación al publicarse una corrección,"Al publicar una corrección, el alumno no recibe la notificación correspondiente por correo electrónico.","1. Iniciar sesión como docente.
+2. Corregir una entrega.
+3. Publicar la corrección.
+4. Verificar la recepción del correo en la cuenta del alumno.
+5. Verificar también la carpeta de spam/correo no deseado.",Funcional,Chrome,,Nuevo,16/06/2026,,v1.6,
+BUG-051,QA-1,BUG-036,US-27 – Rendición del Examen,5,Medio,P2,Historial de entregas no muestra correctamente la información,El sistema no presenta correctamente la información de entregas realizadas por el alumno dentro del historial de exámenes.,"1. Iniciar sesión como alumno.
+2. Acceder al historial de entregas.
+3. Seleccionar una entrega realizada.
+4. Verificar la información mostrada.",Funcional,Chrome,,Nuevo,16/06/2026,,v1.6,
+BUG-052,QA-1,BUG-037,US-24 – Gestión de Exámenes,5,Medio,P2,La funcionalidad de duplicar examen no genera correctamente una copia,"Al utilizar la opción de duplicación de examen, el sistema no crea correctamente una copia editable manteniendo la estructura original.","1. Iniciar sesión como docente.
+2. Seleccionar un examen existente.
+3. Ejecutar la acción ""Duplicar examen"".
+4. Verificar la creación de la copia.",Funcional,Chrome,,Nuevo,16/06/2026,,v1.6,
+BUG-053,QA-2,BUG-018,US-12: Visualización del Dashboard de Mis Cursos,5,Alto,P2,Mensaje de error incorrecto cuando no existen exámenes registrados,"Al acceder a la sección de exámenes cuando no existen exámenes asociados, el sistema presenta un mensaje de error genérico en lugar de una notificación informativa indicando la ausencia de exámenes.","1. Iniciar sesión.
+2. Acceder a la sección ""Exámenes"".
+3. Utilizar una cuenta sin exámenes registrados.
+4. Observar el mensaje mostrado.
+5. Verificar que se presenta error en lugar de mensaje informativo.",UI/UX,Chrome - Edge,https://docs.google.com/document/d/14djLaon1cXYotnyhtd5Nody6PjbxQU4BruU8VWH0MOY/edit?usp=sharing,Nuevo,16/06/2026,,v1.6,
+BUG-054,QA-2,BUG-023,"US-30: Edición, Aprobación y Devolución del Docente",5,Alto,P2,No es posible modificar una calificación luego de corregir un examen,"Una vez que el docente corrige un examen y asigna una calificación, el sistema no permite editar o rectificar la nota otorgada. El docente no dispone de ninguna opción para modificar la calificación registrada.","1. Iniciar sesión como docente.
+2. Acceder a un examen realizado por un estudiante.
+3. Corregir el examen y asignar una calificación.
+4. Guardar la corrección.
+5. Intentar modificar la nota asignada.
+6. Verificar que el sistema no ofrece opción para editar la calificación.",Funcional,Chrome - Edge,https://docs.google.com/document/d/19cxtg4-9Lfk31sGc7jjghgKEMpBZJz96xXrF_8HRCWY/edit?usp=sharing,Nuevo,16/06/2026,,v1.6,
+BUG-055,QA-2,BUG-024,Sin User Story,5,Medio,P3,"Error en las métricas, no aparecen las alertas de vigilancia","Las alertas que los alumnos tuvieron durante la realización de los exámenes no se visualizan desde la vista Profesor en Métricas, ni en alertas de vigilancia ni en la columna ""Alertas"" de la tabla de alumnos por examen.","1. Loguearse como DOCENTE.
+2. Ir a la sección ""Métricas"".
+3. Verificar las alertas de vigilancia.
+4. Verificar la columna ""Alertas"" en la tabla de alumnos por examen.",Funcional,Chrome - Edge,https://docs.google.com/document/d/1M6WTSiRER_kYUxgOPny6P0qH4xZLsBqLcyU_W69KJ-U/edit?usp=sharing,Nuevo,16/06/2026,,v1.6,
+BUG-056,QA-2,BUG-028,US-12: Visualización del Dashboard de Mis Cursos,5,Medio,P3,"Dashboard Mis Cursos muestra ""Sin nombre"" en todas las cards de cursos activos","En la pantalla del dashboard del docente, las cards de la sección ""Cursos activos"" muestran el texto ""Sin nombre"" como título en lugar del nombre real de la materia. El campo name/title no se carga correctamente desde el backend.","1. Loguearse como DOCENTE.
+2. Entrar al Dashboard → ""Mis Cursos"".
+3. Observar las cards de ""Cursos activos"": todas muestran ""Sin nombre"" en lugar del nombre de la materia.",UI/UX,Chrome - Edge,https://docs.google.com/document/d/1xLUZX9cwwMPV7agNlTDPk4bBrcEiqBWkx4CViBCrkf0/edit?usp=sharing,Nuevo,16/06/2026,,v1.6,
